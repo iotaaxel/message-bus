@@ -1,6 +1,8 @@
 # message-bus
 implementing a message bus (benchmarking to confirm consistent sub-millisecond latency)
 
+**Disclaimer**: This was the initial prototype. The beta-friendly version is a private WIP. Options 1 and 2 are two separate brainstorms. I am introducing this as another exploration of mine. In the past, I liked a high-level overview of this but tended to get bored or overwhelmed by some highly detailed documents. I am taking things step by step to understand the process and have a greater idea of how real-world applications come into play. 
+
 # Option 1
 
 ## Overview
