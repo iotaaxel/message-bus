@@ -10,52 +10,11 @@ Implementing a message bus with sub-millisecond latency requires careful conside
 ## Python code
 Python Implementation
 
-We'll use the queue module for the message bus and time module for benchmarking.
-```python
-import queue
-import time
-import threading
+We'll use the `queue` module for the message bus and `time` module for benchmarking.
 
-class MessageBus:
-    def __init__(self):
-        self.queue = queue.Queue()
-
-    def send(self, message):
-        self.queue.put(message)
-
-    def receive(self):
-        return self.queue.get()
-
-def producer(bus):
-    for i in range(100000):
-        bus.send(f"Message {i}")
-
-def consumer(bus):
-    for _ in range(100000):
-        message = bus.receive()
-        # Process the message
-
-bus = MessageBus()
-
-producer_thread = threading.Thread(target=producer, args=(bus,))
-consumer_thread = threading.Thread(target=consumer, args=(bus,))
-
-start_time = time.time()
-
-producer_thread.start()
-consumer_thread.start()
-
-producer_thread.join()
-consumer_thread.join()
-
-end_time = time.time()
-
-print(f"Total time: {end_time - start_time:.2f} seconds")
-print(f"Average latency: {(end_time - start_time) / 100000 * 1000:.2f} ms")
-```
 
 ## C++ code
-We'll use the queue library for the message bus and chrono library for benchmarking.
+We'll use the `queue` library for the message bus and `chrono` library for benchmarking.
 
 ```cpp
 #include <queue>
@@ -132,7 +91,7 @@ Please note that these results are specific to this simplified example and may n
 
 # Option 2
 
-Implementing a message bus with sub-millisecond latency in Python and C++ requires careful design and optimization. Here's a basic outline of how you can approach this:
+Implementing a message bus with sub-millisecond latency in Python and C++ requires careful design and optimization.
 
 Python Implementation:
 
@@ -140,36 +99,9 @@ Choose a suitable message broker: For Python, you can use a lightweight message 
 Use asynchronous I/O: To achieve low latency, use asynchronous I/O operations to send and receive messages. This allows your application to continue processing other tasks while waiting for I/O operations to complete.
 Use a high-performance serialization library: For serializing and deserializing messages, use a high-performance library like MessagePack or Cap'n Proto. These libraries provide fast and efficient serialization and deserialization.
 Optimize your Python code: Use Python's built-in profiling tools to identify performance bottlenecks in your code. Optimize your code to minimize overhead and reduce latency.
-Here's a simple example of a message bus using ZeroMQ in Python:
 
-```python
-import zmq
-import msgpack
+The example is a message bus using `ZeroMQ`.
 
-class MessageBus:
-    def __init__(self):
-        self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.REQ)
-
-    def connect(self, address):
-        self.socket.connect(address)
-
-    def send_message(self, message):
-        serialized_message = msgpack.packb(message)
-        self.socket.send(serialized_message)
-
-    def receive_message(self):
-        response = self.socket.recv()
-        return msgpack.unpackb(response)
-
-# Example usage
-bus = MessageBus()
-bus.connect("tcp://localhost:5555")
-
-bus.send_message({"key": "value"})
-response = bus.receive_message()
-print(response)
-```
 C++ Implementation:
 
 Choose a suitable message broker: For C++, you can use a lightweight message broker like ZeroMQ or Nanomsg, just like in Python.
